@@ -16,6 +16,7 @@ namespace Ezreal7
     {
         public const string ChampionName = "Ezreal";
         public static Menu Menu, ComboMenu, HarassMenu, Auto, LaneClearMenu, JungleClearMenu, Misc, KillStealMenu, Skin, Drawings;
+        public static Item Botrk;
         public static AIHeroClient PlayerInstance
         {
             get { return Player.Instance; }
@@ -34,6 +35,7 @@ namespace Ezreal7
         public static Spell.Skillshot W;
         public static Spell.Skillshot E;
         public static Spell.Skillshot R;
+        public static Spell.Targeted Ignite;
 
         static void Main(string[] args)
         {
@@ -52,14 +54,17 @@ namespace Ezreal7
                 E = new Spell.Skillshot(SpellSlot.E,475,SkillShotType.Linear,250,2000,100);
                 R= new Spell.Skillshot(SpellSlot.R,5000,SkillShotType.Linear,1000,2000,160);
                 R.AllowedCollisionCount = int.MaxValue;
+                Botrk = new Item( ItemId.Blade_of_the_Ruined_King);
+                if (_Player.GetSpellSlotFromName("summonerdot") != SpellSlot.Unknown)
+                    Ignite = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 600);
                 Menu = MainMenu.AddMenu("Ezreal7", "Ezreal");
                 Menu.AddSeparator();
-                var Enemies = EntityManager.Heroes.Enemies.Where(a => !a.IsMe).OrderBy(a => a.BaseSkinName);
                 ComboMenu = Menu.AddSubMenu("Combo Settings", "Combo");
                 ComboMenu.AddSeparator();
                 ComboMenu.AddLabel("Combo Settings");
                 ComboMenu.Add("ComboQ", new CheckBox("Spell [Q]"));
                 ComboMenu.Add("ComboW", new CheckBox("Spell [W]"));
+                ComboMenu.Add("item", new CheckBox("Use [BOTRK]"));
                 ComboMenu.Add("ComboRange", new Slider("Q-W Distance", 900, 0, 1000));
                 ComboMenu.AddSeparator();
                 ComboMenu.Add("ComboR", new CheckBox("Spell [R]"));
@@ -133,6 +138,7 @@ namespace Ezreal7
                 KillStealMenu.AddLabel("KillSteal Settings");
                 KillStealMenu.Add("KsQ", new CheckBox("Use [Q] KillSteal"));
                 KillStealMenu.Add("KsW", new CheckBox("Use [W] KillSteal"));
+                KillStealMenu.Add("ign", new CheckBox("Use [Ignite] KillSteal"));
                 KillStealMenu.AddSeparator();
                 KillStealMenu.AddLabel("Ultimate Settings");
                 KillStealMenu.Add("KsR", new CheckBox("Use [R] KillSteal"));
@@ -227,6 +233,7 @@ namespace Ezreal7
             var MaxRangeR = ComboMenu["MaxRangeR"].Cast<Slider>().CurrentValue;
             var MinRangeR = ComboMenu["MinRangeR"].Cast<Slider>().CurrentValue;
             var MinR = ComboMenu["MinR"].Cast<Slider>().CurrentValue;
+            var item = ComboMenu["item"].Cast<CheckBox>().CurrentValue;
             var Qpred = Q.GetPrediction(target);
             if (useQ && Q.IsReady())
      	    {
@@ -256,6 +263,10 @@ namespace Ezreal7
                 {
                     R.Cast(pred.CastPosition);
                 }
+            }
+            if (Player.Instance.HealthPercent <= 50 || target.HealthPercent < 50 && item && Botrk.IsReady() && Botrk.IsOwned())
+            {
+                Botrk.Cast(target);
             }
         }
 
@@ -302,7 +313,7 @@ namespace Ezreal7
             var laneQAA = LaneClearMenu["ManaLA"].Cast<Slider>().CurrentValue;
             var useQLH = LaneClearMenu["LastQLC"].Cast<CheckBox>().CurrentValue;
             var useAA = LaneClearMenu["LastAA"].Cast<CheckBox>().CurrentValue;
-            var minions = EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(m => m.IsValidTarget(Q.Range) && (Player.Instance.GetSpellDamage(m, SpellSlot.Q) >= m.TotalShieldHealth()));
+            var minions = EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(m => m.IsValidTarget(Q.Range) && (Player.Instance.GetSpellDamage(m, SpellSlot.Q) >= m.TotalShieldHealth() && m.IsEnemy && !m.IsDead && m.IsValid));
             if (Player.Instance.ManaPercent >= laneQMN)
             {
                 if (useQLH && Q.IsReady())
@@ -377,7 +388,7 @@ namespace Ezreal7
             var useAA = LaneClearMenu["LhAA"].Cast<CheckBox>().CurrentValue;
             var LAA = LaneClearMenu["AAMana"].Cast<Slider>().CurrentValue;
             var LhM = LaneClearMenu["LhMana"].Cast<Slider>().CurrentValue;
-            var minion = EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(m => m.IsValidTarget(Q.Range) && (QDamage(m) >= m.TotalShieldHealth()));
+            var minion = EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(m => m.IsValidTarget(Q.Range) && (QDamage(m) >= m.TotalShieldHealth() && m.IsEnemy && !m.IsDead && m.IsValid));
             if (minion == null) return;
             if (Player.Instance.ManaPercent >= LhM)
             {
@@ -500,6 +511,13 @@ namespace Ezreal7
                                 R.Cast(pred.CastPosition);
                             }
                         }
+                    }
+                }
+                if (Ignite != null && KillStealMenu["ign"].Cast<CheckBox>().CurrentValue && Ignite.IsReady())
+                {
+                    if (target.Health < _Player.GetSummonerSpellDamage(target, DamageLibrary.SummonerSpells.Ignite))
+                    {
+                        Ignite.Cast(target);
                     }
                 }
             }
