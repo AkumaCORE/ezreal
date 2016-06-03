@@ -20,6 +20,7 @@ namespace Bristana
         public static Spell.Skillshot W;
         public static Spell.Targeted E;
         public static Spell.Targeted R;
+        public static Item Botrk;
         
         public static Menu Menu,
         SpellMenu,
@@ -148,6 +149,7 @@ namespace Bristana
             var enemies = EntityManager.Heroes.Enemies.OrderByDescending
                 (a => a.HealthPercent).Where(a => !a.IsMe && a.IsValidTarget() && a.Distance(_Player) <= E.Range);
             var target = TargetSelector.GetTarget(R.Range, DamageType.Physical);
+            var item = SpellMenu["item"].Cast<CheckBox>().CurrentValue;
             if (SpellMenu["ComboQ"].Cast<CheckBox>().CurrentValue && Q.IsReady() && target.IsValidTarget(Q.Range))
             {
                 Q.Cast();
@@ -165,6 +167,10 @@ namespace Bristana
                 {
                     E.Cast(eenemies);
                 }
+            }
+            if (Player.Instance.HealthPercent <= 50 || target.HealthPercent < 50 && item && Botrk.IsReady() && Botrk.IsOwned())
+            {
+                Botrk.Cast(target);
             }
         }
 
@@ -255,6 +261,7 @@ namespace Bristana
             W = new Spell.Skillshot(SpellSlot.W, 900, SkillShotType.Circular, 450, int.MaxValue, 180);
             E = new Spell.Targeted(SpellSlot.E, 550);
             R = new Spell.Targeted(SpellSlot.R, 550);
+            Botrk = new Item( ItemId.Blade_of_the_Ruined_King);
 
             Menu = MainMenu.AddMenu("Bristana", "Bristana");
             Menu.AddGroupLabel("Bristana");
@@ -274,6 +281,7 @@ namespace Bristana
             SpellMenu.Add("ComboQ", new CheckBox("Spell [Q]"));
             SpellMenu.Add("ComboR", new CheckBox("Spell [R]"));
             SpellMenu.Add("ComboER", new CheckBox("Spell [ER]"));
+            SpellMenu.Add("item", new CheckBox("Use [BOTRK]"));
             SpellMenu.AddLabel("Spell [E] on");
             foreach (var enemies in EntityManager.Heroes.Enemies.Where(i => !i.IsMe))
             {
