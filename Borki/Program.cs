@@ -21,6 +21,8 @@ namespace Borki
         public static Spell.Skillshot W;
         public static Spell.Active E;
         public static Spell.Skillshot R;
+        public static Item Botrk;
+        public static Spell.Targeted Ignite;
 
 
         public static Menu Menu,
@@ -133,6 +135,7 @@ namespace Borki
             var target2 = TargetSelector.GetTarget(R.Range, DamageType.Magical);
             var QTarget = TargetSelector.GetTarget(Q.Range, DamageType.Mixed);
             var ETarget = TargetSelector.GetTarget(E.Range, DamageType.Mixed);
+            var item = SpellMenu["item"].Cast<CheckBox>().CurrentValue;
             if (ETarget == null) return;
             {
                 var useE = SpellMenu["ComboE"].Cast<CheckBox>().CurrentValue;
@@ -148,6 +151,10 @@ namespace Borki
             if (SpellMenu["ComboR"].Cast<CheckBox>().CurrentValue && R.IsReady() && target2.IsValidTarget(R.Range))
             {
                 R.Cast(target2);
+            }
+            if (Player.Instance.HealthPercent <= 50 || target.HealthPercent < 50 && item && Botrk.IsReady() && Botrk.IsOwned())
+            {
+                Botrk.Cast(target);
             }
         }
 
@@ -216,6 +223,13 @@ namespace Borki
                 {
                     Q.Cast(target);
                 }
+                if (Ignite != null && KillstealMenu["ign"].Cast<CheckBox>().CurrentValue && Ignite.IsReady())
+                {
+                    if (target.Health < _Player.GetSummonerSpellDamage(target, DamageLibrary.SummonerSpells.Ignite))
+                    {
+                        Ignite.Cast(target);
+                    }
+                }
             }
         }
 
@@ -251,6 +265,9 @@ namespace Borki
             W = new Spell.Skillshot(SpellSlot.W, 800, SkillShotType.Linear);
             E = new Spell.Active(SpellSlot.E, 600);
             R = new Spell.Skillshot(SpellSlot.R, 1200, SkillShotType.Linear, 200, 1950, 40);
+            Botrk = new Item( ItemId.Blade_of_the_Ruined_King);
+            if (_Player.GetSpellSlotFromName("summonerdot") != SpellSlot.Unknown)
+                Ignite = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 600);
 
             Menu = MainMenu.AddMenu("Borki", "Borki");
             Menu.AddGroupLabel("BORKI");
@@ -269,6 +286,7 @@ namespace Borki
             SpellMenu.Add("ComboQ", new CheckBox("Spell [Q]"));
             SpellMenu.Add("ComboE", new CheckBox("Spell [E]"));
             SpellMenu.Add("ComboR", new CheckBox("Spell [R]"));
+            SpellMenu.Add("item", new CheckBox("Use [BOTRK]"));
 
             HarassMenu = Menu.AddSubMenu("Harass Settings", "Harass");
 			HarassMenu.AddGroupLabel("Harass Settings");
@@ -298,6 +316,7 @@ namespace Borki
             KillstealMenu.AddGroupLabel("KillSteal Settings");
             KillstealMenu.Add("RKs", new CheckBox("Spell [R]"));
             KillstealMenu.Add("QKs", new CheckBox("Spell [Q]"));
+            KillstealMenu.Add("ign", new CheckBox("Use [Ignite] KillSteal"));
 
             Misc = Menu.AddSubMenu("Misc Settings", "Misc");
             Misc.AddGroupLabel("Misc Settings");

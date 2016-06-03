@@ -19,6 +19,7 @@ namespace Olaf7
         public static Item Botrk;
         public static Item Hydra;
         public static Item Tiamat;
+        public static Item Titanic;
         public static AIHeroClient PlayerInstance
         {
             get { return Player.Instance; }
@@ -35,6 +36,7 @@ namespace Olaf7
         public static Spell.Active W;
         public static Spell.Targeted E;
         public static Spell.Active R;
+        public static Spell.Targeted Ignite;
 
         static void Main(string[] args)
         {
@@ -52,9 +54,12 @@ namespace Olaf7
                 W = new Spell.Active(SpellSlot.W);
                 E = new Spell.Targeted(SpellSlot.E,325);
                 R= new Spell.Active(SpellSlot.R);
-                Botrk = new Item((int)ItemId.Blade_of_the_Ruined_King);
-                Tiamat = new Item((int) ItemId.Tiamat_Melee_Only, 400);
-                Hydra = new Item((int) ItemId.Ravenous_Hydra_Melee_Only, 400);
+                if (_Player.GetSpellSlotFromName("summonerdot") != SpellSlot.Unknown)
+                    Ignite = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 600);
+                Botrk = new Item( ItemId.Blade_of_the_Ruined_King);
+                Tiamat = new Item( ItemId.Tiamat_Melee_Only, 400);
+                Hydra = new Item( ItemId.Ravenous_Hydra_Melee_Only, 400);
+                Titanic = new Item( ItemId.Titanic_Hydra, Player.Instance.GetAutoAttackRange());
                 Menu = MainMenu.AddMenu("Olaf7", "Olaf");
                 Menu.AddGroupLabel("Olaf7");
                 Menu.AddLabel(" Leave Feedback For Any Bugs ");
@@ -122,6 +127,7 @@ namespace Olaf7
                 KillStealMenu.AddGroupLabel("KillSteal Settings");
                 KillStealMenu.Add("KsQ", new CheckBox("Use [Q] KillSteal"));
                 KillStealMenu.Add("KsE", new CheckBox("Use [E] KillSteal"));
+                KillStealMenu.Add("KsIgnite", new CheckBox("Use [Ignite] KillSteal"));
 
                 Skin = Menu.AddSubMenu("Skin Changer", "SkinChanger");
                 Skin.AddGroupLabel("Skin Settings");
@@ -239,6 +245,10 @@ namespace Olaf7
             if (item && Tiamat.IsOwned() && Tiamat.IsReady() && Tiamat.IsInRange(target))
             {
                 Tiamat.Cast();
+            }
+            if (item && target.IsValidTarget() && Titanic.IsReady())
+            {
+                Titanic.Cast();
             }
         }
 
@@ -399,6 +409,13 @@ namespace Olaf7
                     if (target.Health + target.AttackShield < Player.Instance.GetSpellDamage(target, SpellSlot.E))
                     {
                         E.Cast(target);
+                    }
+                }
+                if (Ignite != null && KillStealMenu["KsIgnite"].Cast<CheckBox>().CurrentValue && Ignite.IsReady())
+                {
+                    if (target.Health < _Player.GetSummonerSpellDamage(target, DamageLibrary.SummonerSpells.Ignite))
+                    {
+                        Ignite.Cast(target);
                     }
                 }
             }
