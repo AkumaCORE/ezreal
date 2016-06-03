@@ -20,6 +20,7 @@ namespace Ryze
         public static Spell.Targeted E;
         public static Spell.Targeted W;
         public static Spell.Active R;
+        public static Spell.Targeted Ignite;
         public static AIHeroClient Player
         {
             get { return ObjectManager.Player; }
@@ -48,6 +49,8 @@ namespace Ryze
             W = new Spell.Targeted(SpellSlot.W, 600);
             E = new Spell.Targeted(SpellSlot.E, 600);
             R = new Spell.Active(SpellSlot.R);
+            if (_Player.GetSpellSlotFromName("summonerdot") != SpellSlot.Unknown)
+                Ignite = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 600);
 
             menu = MainMenu.AddMenu("Ryze7", "Ryze");
             menu.AddLabel(" FEATURES ");
@@ -75,8 +78,8 @@ namespace Ryze
 
             LastHitMenu = menu.AddSubMenu("LastHit Settings", "LastHit");
             LastHitMenu.Add("LHQ", new CheckBox("Spell [Q]"));
-            LastHitMenu.Add("LHW", new CheckBox("Spell [W]"));
-            LastHitMenu.Add("LHE", new CheckBox("Spell [E]"));
+            LastHitMenu.Add("LHW", new CheckBox("Spell [W]", false));
+            LastHitMenu.Add("LHE", new CheckBox("Spell [E]", false));
             LastHitMenu.Add("LastHitMana", new Slider("Min Mana For LastHit", 50, 0, 100));
 
             ClearMenu = menu.AddSubMenu("LaneClear Settings", "LaneClear");
@@ -99,6 +102,7 @@ namespace Ryze
             KsMenu.Add("KsQ", new CheckBox("Spell [Q]"));
             KsMenu.Add("KsW", new CheckBox("Spell [W]"));
             KsMenu.Add("KsE", new CheckBox("Spell [E]"));
+            KsMenu.Add("KsIgnite", new CheckBox("Use [Ignite] KillSteal"));
 			
             Misc = menu.AddSubMenu("Misc Settings", "Misc");
             Misc.AddGroupLabel("AntiGap Setting");
@@ -109,7 +113,7 @@ namespace Ryze
 
 			
             Autos = menu.AddSubMenu("Stacks Settings", "Stacks");
-            Autos.Add("AutoStack", new CheckBox("Auto Stack"));
+            Autos.Add("AutoStack", new KeyBind("Auto Stack", true, KeyBind.BindTypes.PressToggle, 'T'));
             Autos.Add("MaxStack", new Slider("Keep Max Stacks", 2, 1, 5));
             Autos.Add("StackMana", new Slider("Min Mana AutoStack", 70, 0, 100));
 
@@ -224,7 +228,7 @@ namespace Ryze
             {
                 return;
             }
-            if (Autos["AutoStack"].Cast<CheckBox>().CurrentValue)
+            if (Autos["AutoStack"].Cast<KeyBind>().CurrentValue)
             {
                 if (Stacks >= Autos["MaxStack"].Cast<Slider>().CurrentValue)
                 {
@@ -386,6 +390,13 @@ namespace Ryze
                     {
                         E.Cast(e);
                     }
+                    if (Ignite != null && KsMenu["KsIgnite"].Cast<CheckBox>().CurrentValue && Ignite.IsReady())
+                    {
+                        if (e.Health < _Player.GetSummonerSpellDamage(e, DamageLibrary.SummonerSpells.Ignite))
+                        {
+                            Ignite.Cast(e);
+                        }
+                    }
                 }
             }
         }
@@ -406,7 +417,7 @@ namespace Ryze
                     {
                         Q.Cast(minion);
                     }
-                    if (useW && W.IsReady() && minion.Health <= _Player.GetSpellDamage(minion, SpellSlot.W) && minion.IsValidTarget())
+                    if (useW && W.IsReady() && minion.Health <= _Player.GetSpellDamage(minion, SpellSlot.W))
                     {
                         W.Cast(minion);
                     }
