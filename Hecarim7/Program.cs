@@ -26,6 +26,7 @@ namespace Hecarim7
         public static Spell.Active W;
         public static Spell.Active E;
         public static Spell.Skillshot R;
+        public static Spell.Targeted Ignite;
 
         static void Main(string[] args)
         {
@@ -44,7 +45,9 @@ namespace Hecarim7
             E = new Spell.Active(SpellSlot.E, 450);
             R= new Spell.Skillshot(SpellSlot.R, 1000, SkillShotType.Linear, 250, 800, 200);
             R.AllowedCollisionCount = int.MaxValue;
-                
+            if (_Player.GetSpellSlotFromName("summonerdot") != SpellSlot.Unknown)
+                Ignite = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 600);
+
 			Menu = MainMenu.AddMenu("Hecarim7", "Hecarim");
             Menu.AddSeparator();
 			ComboMenu = Menu.AddSubMenu("Combo Settings", "Combo");
@@ -86,6 +89,7 @@ namespace Hecarim7
             KillStealMenu.AddLabel("KillSteal Settings");
             KillStealMenu.Add("KsQ", new CheckBox("Use [Q] KillSteal"));
             KillStealMenu.Add("KsW", new CheckBox("Use [W] KillSteal"));
+            KillStealMenu.Add("ign", new CheckBox("Use [Ignite] KillSteal"));
             KillStealMenu.AddSeparator();
             KillStealMenu.AddLabel("Ultimate Settings");
             KillStealMenu.Add("KsR", new CheckBox("Use [R] KillSteal"));
@@ -299,6 +303,13 @@ namespace Hecarim7
                                 R.Cast(pred.CastPosition);
                             }
                         }
+                    }
+                }
+                if (Ignite != null && KillStealMenu["ign"].Cast<CheckBox>().CurrentValue && Ignite.IsReady())
+                {
+                    if (target.Health < _Player.GetSummonerSpellDamage(target, DamageLibrary.SummonerSpells.Ignite))
+                    {
+                        Ignite.Cast(target);
                     }
                 }
             }
