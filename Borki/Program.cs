@@ -152,9 +152,9 @@ namespace Borki
             {
                 R.Cast(target2);
             }
-            if (Player.Instance.HealthPercent <= 50 || target.HealthPercent < 50 && item && Botrk.IsReady() && Botrk.IsOwned())
+            if (Player.Instance.HealthPercent <= 50 || target2.HealthPercent < 50 && item && Botrk.IsReady() && Botrk.IsOwned())
             {
-                Botrk.Cast(target);
+                Botrk.Cast(target2);
             }
         }
 
