@@ -70,7 +70,7 @@ namespace Graves7
             ComboMenu.AddSeparator();
             ComboMenu.Add("ComboW", new CheckBox("Spell [W]"));
             ComboMenu.Add("ComboE", new CheckBox("Spell [E] Reset AA"));
-            ComboMenu.Add("ComboR", new CheckBox("Spell [R]"));
+            ComboMenu.Add("ComboR", new CheckBox("Spell [R]", false));
             ComboMenu.Add("MinR", new Slider("Min Enemies Use [R]", 2, 0, 5));
 
             HarassMenu = Menu.AddSubMenu("Harass Settings", "HarassMenu");
