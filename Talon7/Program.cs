@@ -205,7 +205,7 @@ namespace Talon7
             var hp = ComboMenu["myhp"].Cast<Slider>().CurrentValue;
             if (target != null)
             {
-                if (useE && E.IsReady() && E.IsInRange(target) && target.Distance(Player.Instance) > Player.Instance.GetAutoAttackRange(target) && Q.IsReady() && Player.Instance.HealthPercent >= hp)
+                if (useE && E.IsReady() && E.IsInRange(target) && target.Distance(Player.Instance) > Player.Instance.GetAutoAttackRange(target) && Player.Instance.HealthPercent >= hp)
                 {
                     E.Cast(target);
                 }
@@ -217,13 +217,13 @@ namespace Talon7
                 {
                     R.Cast();
                 }
-                if (Player.Instance.HealthPercent <= 50 || target.HealthPercent < 50 && item && Botrk.IsReady() && Botrk.IsOwned())
-                {
-                    Botrk.Cast(target);
-                }
                 if (item && Bil.IsReady() && Bil.IsOwned())
                 {
                     Bil.Cast(target);
+                }
+                else if (Player.Instance.HealthPercent <= 50 || target.HealthPercent < 50 && item && Botrk.IsReady() && Botrk.IsOwned())
+                {
+                    Botrk.Cast(target);
                 }
                 if (you && Youmuu.IsReady() && Youmuu.IsOwned() && target.IsValidTarget(700))
                 {
