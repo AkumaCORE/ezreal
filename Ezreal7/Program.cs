@@ -235,27 +235,25 @@ namespace Ezreal7
             var MinR = ComboMenu["MinR"].Cast<Slider>().CurrentValue;
             var item = ComboMenu["item"].Cast<CheckBox>().CurrentValue;
             var Qpred = Q.GetPrediction(target);
-            if (useQ && Q.IsReady())
+            if (target != null)
      	    {
-                if (target != null)
+                if (useQ && Q.IsReady())
                 {				
                     if (Qpred.HitChance >= HitChance.High)
                     {
                         Q.Cast(Qpred.CastPosition);
                     }
                 }
-			}
-            var Wpred = W.GetPrediction(target);
-            if (useW && W.IsReady())
-     	    {
-                if (target != null)
+                var Wpred = W.GetPrediction(target);
+                if (useW && W.IsReady())
                 {				
                     if (Wpred.HitChance >= HitChance.High)
                     {
                         W.Cast(Qpred.CastPosition);
                     }
-				}
-			}
+	    		}
+            }
+
             if (useR && R.IsReady() && target.IsValidTarget(R.Range) && target.IsInRange(Player.Instance, MaxRangeR) && !target.IsInRange(Player.Instance, MinRangeR))
             {
                 var pred = R.GetPrediction(target);
@@ -274,17 +272,16 @@ namespace Ezreal7
         {
 
             var useQ = JungleClearMenu["QJungle"].Cast<CheckBox>().CurrentValue;
+            var mana = JungleClearMenu["MnJungle"].Cast<Slider>().CurrentValue;
             var jungleMonsters = EntityManager.MinionsAndMonsters.GetJungleMonsters().OrderByDescending(j => j.Health).FirstOrDefault(j => j.IsValidTarget(Q.Range));
-            var Qpred = Q.GetPrediction(jungleMonsters);
-            if ((Player.Instance.ManaPercent <= JungleClearMenu["MnJungle"].Cast<Slider>().CurrentValue))
+            if (jungleMonsters != null)
             {
-                return;
-            }
-            if (useQ && Q.IsReady() && Q.IsInRange(jungleMonsters))
-			{
-                if (Player.Instance.GetAutoAttackRange() >= jungleMonsters.Distance(Player.Instance))
-                {
-                    Q.Cast(Qpred.CastPosition);
+                if (useQ && Q.IsReady() && Q.IsInRange(jungleMonsters) && Player.Instance.ManaPercent >= mana)
+		    	{
+                    if (Player.Instance.GetAutoAttackRange() >= jungleMonsters.Distance(Player.Instance))
+                    {
+                        Q.Cast(jungleMonsters);
+                    }
                 }
             }
         }
@@ -314,18 +311,21 @@ namespace Ezreal7
             var useQLH = LaneClearMenu["LastQLC"].Cast<CheckBox>().CurrentValue;
             var useAA = LaneClearMenu["LastAA"].Cast<CheckBox>().CurrentValue;
             var minions = EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(m => m.IsValidTarget(Q.Range) && (Player.Instance.GetSpellDamage(m, SpellSlot.Q) >= m.TotalShieldHealth() && m.IsEnemy && !m.IsDead && m.IsValid));
-            if (Player.Instance.ManaPercent >= laneQMN)
+            if (minions != null)
             {
-                if (useQLH && Q.IsReady())
+                if (Player.Instance.ManaPercent >= laneQMN)
                 {
-                    Q.Cast(minions);
+                    if (useQLH && Q.IsReady())
+                    {
+                        Q.Cast(minions);
+                    }
                 }
-            }
-            if (Player.Instance.ManaPercent >= laneQAA && Player.Instance.GetAutoAttackRange() <= minions.Distance(Player.Instance))
-            {
-                if (useAA && Q.IsReady())
+                if (Player.Instance.ManaPercent >= laneQAA && Player.Instance.GetAutoAttackRange() <= minions.Distance(Player.Instance))
                 {
-                    Q.Cast(minions);
+                    if (useAA && Q.IsReady())
+                    {
+                        Q.Cast(minions);
+                    }
                 }
             }
         }
@@ -389,19 +389,21 @@ namespace Ezreal7
             var LAA = LaneClearMenu["AAMana"].Cast<Slider>().CurrentValue;
             var LhM = LaneClearMenu["LhMana"].Cast<Slider>().CurrentValue;
             var minion = EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(m => m.IsValidTarget(Q.Range) && (QDamage(m) >= m.TotalShieldHealth() && m.IsEnemy && !m.IsDead && m.IsValid));
-            if (minion == null) return;
-            if (Player.Instance.ManaPercent >= LhM)
+            if (minion != null)
             {
-                if (useQ && Q.IsReady())
+                if (Player.Instance.ManaPercent >= LhM)
                 {
-                    Q.Cast(minion);
+                    if (useQ && Q.IsReady())
+                    {
+                        Q.Cast(minion);
+                    }
                 }
-            }
-            if (Player.Instance.ManaPercent >= LAA && Player.Instance.GetAutoAttackRange() <= minion.Distance(Player.Instance))
-            {
-                if (useAA && Q.IsReady())
+                if (Player.Instance.ManaPercent >= LAA && Player.Instance.GetAutoAttackRange() <= minion.Distance(Player.Instance))
                 {
-                    Q.Cast(minion);
+                    if (useAA && Q.IsReady())
+                    {
+                        Q.Cast(minion);
+                    }
                 }
             }
         }
