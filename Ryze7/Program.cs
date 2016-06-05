@@ -20,6 +20,7 @@ namespace Ryze
         public static Spell.Targeted E;
         public static Spell.Targeted W;
         public static Spell.Active R;
+        public static Item Seraph;
         public static Spell.Targeted Ignite;
         public static AIHeroClient Player
         {
@@ -51,24 +52,20 @@ namespace Ryze
             R = new Spell.Active(SpellSlot.R);
             if (_Player.GetSpellSlotFromName("summonerdot") != SpellSlot.Unknown)
                 Ignite = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 600);
-
+            Seraph = new Item(3040);
             menu = MainMenu.AddMenu("Ryze7", "Ryze");
             menu.AddLabel(" FEATURES ");
             menu.AddLabel(" Combo Mode ");
-            menu.AddLabel(" Harass Mode ");
-            menu.AddLabel(" Jungle Clear ");
-            menu.AddLabel(" Lane Clear ");
             menu.AddLabel(" Auto Stacks ");
-            menu.AddLabel(" AntiGapcloser ");
             menu.AddLabel(" Block AA In Combo ");
-            menu.AddLabel(" Drawings Mode ");
-            menu.AddLabel(" Skin Changer ");			
+            menu.AddLabel(" Leave Feedback For Any Bugs ");
 
             ComboMenu = menu.AddSubMenu("Combo Settings", "Combo");
 			ComboMenu.Add("ComboQ", new CheckBox("Spell [Q]"));
             ComboMenu.Add("ComboW", new CheckBox("Spell [W]"));
             ComboMenu.Add("ComboE", new CheckBox("Spell [E]"));
             ComboMenu.Add("ComboR", new CheckBox("Spell [R]"));
+            ComboMenu.Add("Human", new Slider("Humanizer Delay", 200, 0, 1000));
 
             HarassMenu = menu.AddSubMenu("Harass Settings", "Harass");
             HarassMenu.Add("HQ", new CheckBox("Spell [Q]"));
@@ -107,6 +104,9 @@ namespace Ryze
             Misc = menu.AddSubMenu("Misc Settings", "Misc");
             Misc.AddGroupLabel("AntiGap Setting");
             Misc.Add("gapw", new CheckBox("AntiGap [W]"));
+            Misc.AddGroupLabel("Seraph Settings");
+            Misc.Add("dts", new CheckBox("Use Seraph"));
+            Misc.Add("Hp", new Slider("HP For Seraph", 30, 0, 100));
             Misc.AddGroupLabel("Skin Changer");
             Misc.Add("checkSkin", new CheckBox("Use Skin Changer"));
             Misc.Add("skin.Id", new ComboBox("Skin Mode", 3, "Default", "1", "2", "3", "4", "5", "6", "7", "8"));
@@ -131,6 +131,7 @@ namespace Ryze
 
         private static void Game_OnTick(EventArgs args)
         {
+            Orbwalker.DisableAttacking = false;
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
             {
@@ -155,9 +156,8 @@ namespace Ryze
 			}
                 AutoStack();
                 KillSteal();
-				AllowAA();
+                Dtc();
 
-				
             if (_Player.SkinId != Misc["skin.Id"].Cast<ComboBox>().CurrentValue)
             {
                 if (checkSkin())
@@ -255,67 +255,71 @@ namespace Ryze
                 if (useQ && Q.IsReady())
                     QCast();
                 else if (!Q.IsReady() && useE && E.IsReady())
-                    E.Cast(target);
+                    Core.DelayAction(() => E.Cast(target), ComboMenu["Human"].Cast<Slider>().CurrentValue);
                 else if (!E.IsReady() && useW && W.IsReady())
-                    W.Cast(target);
+                    Core.DelayAction(() => W.Cast(target), ComboMenu["Human"].Cast<Slider>().CurrentValue);
                 else if (!E.IsReady() && useR && R.IsReady())
-                    R.Cast();
+                    Core.DelayAction(() => R.Cast(), ComboMenu["Human"].Cast<Slider>().CurrentValue);
                 if (!R.IsReady() && useQ && Q.IsReady())
                     QCast();
                 else if (!Q.IsReady() && useE && E.IsReady())
-                    E.Cast(target);
+                    Core.DelayAction(() => E.Cast(target), ComboMenu["Human"].Cast<Slider>().CurrentValue);
                 if (!E.IsReady() && useQ && Q.IsReady())
                     QCast();
                 else if (!Q.IsReady() && useW && W.IsReady())
-                    W.Cast(target);
+                    Core.DelayAction(() => W.Cast(target), ComboMenu["Human"].Cast<Slider>().CurrentValue);
                 else if (!W.IsReady() && useQ && Q.IsReady())
                     QCast();
                 else if (!Q.IsReady() && useE && E.IsReady())
-                    E.Cast(target);
+                    Core.DelayAction(() => E.Cast(target), ComboMenu["Human"].Cast<Slider>().CurrentValue);
                 else if (!E.IsReady() && useQ && Q.IsReady())
                     QCast();
                 else if (!Q.IsReady() && useW && W.IsReady())
-                    W.Cast(target);
+                    Core.DelayAction(() => W.Cast(target), ComboMenu["Human"].Cast<Slider>().CurrentValue);
                 else if (!W.IsReady() && useQ && Q.IsReady())
                     QCast();
                 else if (!Q.IsReady() && useE && E.IsReady())
-                    E.Cast(target);
+                    Core.DelayAction(() => E.Cast(target), ComboMenu["Human"].Cast<Slider>().CurrentValue);
                 else if (!E.IsReady() && useQ && Q.IsReady())
                     QCast();
                 else if (!Q.IsReady() && useW && W.IsReady())
-                    W.Cast(target);
+                    Core.DelayAction(() => W.Cast(target), ComboMenu["Human"].Cast<Slider>().CurrentValue);
                 else if (!W.IsReady() && useQ && Q.IsReady())
                     QCast();
                 else if (!Q.IsReady() && useE && E.IsReady())
-                    E.Cast(target);
+                    Core.DelayAction(() => E.Cast(target), ComboMenu["Human"].Cast<Slider>().CurrentValue);
                 else if (!E.IsReady() && useQ && Q.IsReady())
                     QCast();
                 else if (!Q.IsReady() && useW && W.IsReady())
-                    W.Cast(target);
+                    Core.DelayAction(() => W.Cast(target), ComboMenu["Human"].Cast<Slider>().CurrentValue);
                 else if (!W.IsReady() && useQ && Q.IsReady())
                     QCast();
                 else if (!Q.IsReady() && useE && E.IsReady())
-                    E.Cast(target);
+                    Core.DelayAction(() => E.Cast(target), ComboMenu["Human"].Cast<Slider>().CurrentValue);
                 else if (!E.IsReady() && useQ && Q.IsReady())
                     QCast();
                 else if (!Q.IsReady() && useW && W.IsReady())
-                    W.Cast(target);
+                    Core.DelayAction(() => W.Cast(target), ComboMenu["Human"].Cast<Slider>().CurrentValue);
             }
         }
-        public static void AllowAA()
-		{
-			if (!W.IsReady() && !E.IsReady())
-		    {
-		        Orbwalker.DisableAttacking = false;
-			}
-		}
         public static void Human()
 		{
-			if (W.IsReady() && E.IsReady())
+			if (W.IsReady() || E.IsReady())
 		    {
 		        Orbwalker.DisableAttacking = true;
 			}
 		}
+
+        private static void Dtc()
+        {
+            if (!Player.IsDead && Misc["dts"].Cast<CheckBox>().CurrentValue)
+            {
+                if (Seraph.IsOwned() && Seraph.IsReady() && Player.HealthPercent <= Misc["Hp"].Cast<Slider>().CurrentValue && ObjectManager.Player.Position.CountEnemiesInRange(600) >= 1)
+                {
+                    Seraph.Cast();
+                }
+            }
+        }
 
         public static void Harass()
         {
@@ -366,7 +370,6 @@ namespace Ryze
                 else if (!Q.IsReady() && useW && W.IsReady())
                     W.Cast(target);
             }
-            Orbwalker.DisableAttacking = false;
         }
 
         public static void KillSteal()
@@ -427,7 +430,6 @@ namespace Ryze
                     }
                 }
             }
-            Orbwalker.DisableAttacking = false;
         }
 		
         public static void LaneClear()
@@ -458,7 +460,6 @@ namespace Ryze
                     }
                 }
             }
-            Orbwalker.DisableAttacking = false;
         }
 
         public static void JungleClear()
@@ -493,7 +494,6 @@ namespace Ryze
                     }
                 }
             }
-            Orbwalker.DisableAttacking = false;
         }
     }
 }
