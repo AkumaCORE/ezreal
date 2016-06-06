@@ -171,9 +171,9 @@ namespace Ezreal7
                     foreach (var Minion in Minions)
                     
                     if (Minion != null && Prediction.Health.GetPrediction(Minion, 1) > Player.Instance.TotalAttackDamage && Prediction.Health.GetPrediction(Minion, 1) - sender.TotalAttackDamage <= 0 )
-                     Chat.Print("not null");
+                    
                     {
-                        
+                        Chat.Print("not null");
                         if( Minion.IsValidTarget(Player.Instance.GetAutoAttackRange(Minion)) && Orbwalker.CanAutoAttack && Minion == args.Target)
                         {
                             if(Q.IsReady())
