@@ -180,7 +180,8 @@ namespace Ezreal7
                             {
                                 
                                 {
-                                    
+                                    Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
+                                    Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
                                      Q.Cast(Minion);
                                     Chat.Print("Last Hitting With AA-Q");
