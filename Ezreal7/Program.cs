@@ -174,9 +174,10 @@ namespace Ezreal7
                     if (Minion != null && args.Target == Minion)
                     
                     {
-                        Chat.Print("minion detected");
+                        Chat.Print(""The target is : " + Prediction.Health.GetPrediction(Minion, 500");
+                        
  
-				if(Minion.Health * 0.8 < sender.TotalAttackDamage && Prediction.Health.GetPrediction(Minion, R.CastDelay * 1000) > 100)
+				if(Minion.Health * 100 < sender.TotalAttackDamage)
 				 {   
 				    Chat.Print("health detected");
 				    Orbwalker.DisableMovement = true;
