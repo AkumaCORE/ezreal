@@ -178,9 +178,9 @@ namespace Ezreal7
                         Chat.Print("The target is : " + Prediction.Health.GetPrediction(Minion, 945 * (int)(Minion.Distance(sender.Position)/750)));
                         
  
-				if(Minion.Health * 100 < sender.TotalAttackDamage)
+				if(Prediction.Health.GetPrediction(Minion, 945 * (int)(Minion.Distance(sender.Position)/750)) > Player.TotalAttackDamage &&  Prediction.Health.GetPrediction(Minion, 945 * (int)(Minion.Distance(sender.Position)/750)) <= sender.TotalAttackDamage * 1.25)
 				 {   
-				    Chat.Print("health detected");
+				    Chat.Print("LH");
 				    Orbwalker.DisableMovement = true;
                                     Core.DelayAction( () => Player.IssueOrder(GameObjectOrder.AttackUnit, args.Target),50);
                                     Core.DelayAction( () => Q.Cast(Minion),150);
