@@ -176,7 +176,7 @@ namespace Ezreal7
                     
                     {
                          var AMinions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Ally, Minion.Position, 500).ToList();
-                        Chat.Print("The target is : " + Prediction.Health.GetPrediction(Minion, 940 * (int)(Minion.Distance(sender.Position)/750)) + (int)(AMinions.Count * -5) );
+                        Chat.Print("The target is : " + (Prediction.Health.GetPrediction(Minion, 940 * (int)(Minion.Distance(sender.Position)/750)) + (int)(AMinions.Count * -5)) );
                         
  
 				if(Prediction.Health.GetPrediction(Minion, 940 * (int)(Minion.Distance(sender.Position)/750)) + (int)(AMinions.Count * -5) > Player.Instance.TotalAttackDamage &&  Prediction.Health.GetPrediction(Minion, 940 * (int)(Minion.Distance(sender.Position)/750)) + (int)(AMinions.Count * -5) <= sender.TotalAttackDamage * 1.25)
