@@ -179,7 +179,7 @@ namespace Ezreal7
                         Chat.Print("The target is : " + Prediction.Health.GetPrediction(Minion, 945 * (int)(Minion.Distance(sender.Position)/750)) + (int)(AMinions.Count * -5) );
                         
  
-				if(Prediction.Health.GetPrediction(Minion, 945 * (int)(Minion.Distance(sender.Position)/750)) > Player.Instance.TotalAttackDamage &&  Prediction.Health.GetPrediction(Minion, 945 * (int)(Minion.Distance(sender.Position)/750)) <= sender.TotalAttackDamage * 1.25)
+				if(Prediction.Health.GetPrediction(Minion, 945 * (int)(Minion.Distance(sender.Position)/750)) + (int)(AMinions.Count * -5) > Player.Instance.TotalAttackDamage &&  Prediction.Health.GetPrediction(Minion, 945 * (int)(Minion.Distance(sender.Position)/750)) + (int)(AMinions.Count * -5) <= sender.TotalAttackDamage * 1.25)
 				 {   
 				    Chat.Print("LH");
 				    Orbwalker.DisableMovement = true;
