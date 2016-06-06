@@ -170,7 +170,7 @@ namespace Ezreal7
                     var Minions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.Position, 750);
                     foreach (var Minion in Minions)
                     
-                    if (Minion != null && Prediction.Health.GetPrediction(args.Target, 1) > Player.Instance.TotalAttackDamage && Prediction.Health.GetPrediction(Minion, 1) - sender.TotalAttackDamage <= 0 )
+                    if (Minion != null && Prediction.Health.GetPrediction(Minion, 1) > Player.Instance.TotalAttackDamage && Prediction.Health.GetPrediction(Minion, 1) - sender.TotalAttackDamage <= 0 )
                      
                     {
                         
