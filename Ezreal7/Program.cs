@@ -175,7 +175,7 @@ namespace Ezreal7
                     if (Minion != null && args.Target == Minion)
                     
                     {
-                         var AMinions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Ally, Minion.Position, 500).ToList();
+                         var AMinions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Ally, Minion.Position, 300).ToList();
                         Chat.Print("The target is : " + (Prediction.Health.GetPrediction(Minion, 940 * (int)(Minion.Distance(sender.Position)/750)) + (int)(AMinions.Count * -5)) );
                         
  
