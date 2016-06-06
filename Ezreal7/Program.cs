@@ -182,7 +182,7 @@ namespace Ezreal7
                                 {
                                     
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
-                                    Core.DelayAction( () =>  Q.Cast(Minion), 300);
+                                    Core.DelayAction( () =>  Q.Cast(Minion), 100);
                                     Chat.Print("Last Hitting With AA-Q");
                                     
                                 }
@@ -191,7 +191,7 @@ namespace Ezreal7
                                 {
                                     
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
-                                    Core.DelayAction( () =>  E.Cast(Minion), 300);
+                                    Core.DelayAction( () =>  E.Cast(Minion), 100);
                                     Chat.Print("Last Hitting With AA-E");
                                     
                                 }
