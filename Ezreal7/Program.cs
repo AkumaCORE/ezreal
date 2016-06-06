@@ -174,7 +174,7 @@ namespace Ezreal7
                     if (Minion != null && args.Target == Minion)
                     
                     {
-                        Chat.Print("The target is : " + Prediction.Health.GetPrediction(Minion, 750 * (int)(Minion.Distance(sender.Position)/750)));
+                        Chat.Print("The target is : " + Prediction.Health.GetPrediction(Minion, 900 * (int)(Minion.Distance(sender.Position)/750)));
                         
  
 				if(Minion.Health * 100 < sender.TotalAttackDamage)
