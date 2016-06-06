@@ -180,7 +180,7 @@ namespace Ezreal7
                             {
                                 
                                 {
-				    Player.IssueOrder(GameObjectOrder.Stop);
+				    Player.IssueOrder(GameObjectOrder.Stop.playerPosition);
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
