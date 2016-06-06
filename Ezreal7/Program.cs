@@ -183,8 +183,8 @@ namespace Ezreal7
 				    
 				    Orbwalker.DisableMovement = true;
                                     Core.DelayAction( () => Player.IssueOrder(GameObjectOrder.AttackUnit, args.Target),50);
-                                    Q.Cast(Minion);
-                                    Orbwalker.DisableMovement = false;
+                                    Core.DelayAction( () => Q.Cast(Minion),50);
+                                    Core.DelayAction( () => Orbwalker.DisableMovement = false,200);
                                     
                                     Chat.Print("Last Hitting With AA-Q");
                                     
