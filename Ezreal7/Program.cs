@@ -180,12 +180,12 @@ namespace Ezreal7
                             {
                                 
                                 {
-				    Orbwalker.DisableAttack = true;
+				    Orbwalker.DisableAttacking = true;
 				    Orbwalker.DisableMovement = true;
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
                                     Q.Cast(Minion);
                                     Orbwalker.DisableMovement = false;
-                                    Orbwalker.DisableAttack = false;
+                                    Orbwalker.DisableAttacking = false;
                                     Chat.Print("Last Hitting With AA-Q");
                                     
                                 }
