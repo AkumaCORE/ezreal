@@ -182,16 +182,14 @@ namespace Ezreal7
                                 {
 				    Player.IssueOrder(GameObjectOrder.Stop, ObjectManager.Player.Position);
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
-                                    Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
-                                    Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
-                                     Q.Cast(Minion);
+                                    Q.Cast(Minion);
                                     Chat.Print("Last Hitting With AA-Q");
                                     
                                 }
                             }
                             else if(E.IsReady())
                                 {
-                                    
+                                    Player.IssueOrder(GameObjectOrder.Stop, ObjectManager.Player.Position);
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
                                     Core.DelayAction( () =>  E.Cast(Minion), 100);
                                     Chat.Print("Last Hitting With AA-E");
