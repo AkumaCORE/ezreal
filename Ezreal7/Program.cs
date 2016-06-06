@@ -175,7 +175,7 @@ namespace Ezreal7
                     {
                         Chat.Print("not null");
  
-                                {
+
 				    
 				    Orbwalker.DisableMovement = true;
                                     Core.DelayAction( () => Player.IssueOrder(GameObjectOrder.AttackUnit, args.Target),50);
@@ -184,12 +184,11 @@ namespace Ezreal7
                                     
                                     Chat.Print("Last Hitting With AA-Q");
                                     
-                                }
-                            
+ 
 
 
 
-                        }
+
 
                     }
                 }
