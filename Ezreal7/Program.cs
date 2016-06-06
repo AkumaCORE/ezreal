@@ -182,7 +182,7 @@ namespace Ezreal7
                                 {
 				    
 				    Orbwalker.DisableMovement = true;
-                                    Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
+                                    Player.IssueOrder(GameObjectOrder.AttackUnit, args.Target);
                                     Q.Cast(Minion);
                                     Orbwalker.DisableMovement = false;
                                     
