@@ -166,24 +166,26 @@ namespace Ezreal7
             {
                 if (!(args.Target is AIHeroClient) && args.Target != null)
                 {
-                Chat.Print("t");
+                Chat.Print("sender detected");
                     
                     var Minions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.Position, 750);
                     foreach (var Minion in Minions)
                     
-                    if (Minion != null && args.Target == Minion && Minion.Health < sender.TotalAttackDamage)
+                    if (Minion != null && args.Target == Minion)
                     
                     {
-                        Chat.Print("not null");
+                        Chat.Print("minion detected");
  
-
-				    
+				if(Minion.Health < sender.TotalAttackDamage)
+				 {   
+				    Chat.Print("health detected");
 				    Orbwalker.DisableMovement = true;
                                     Core.DelayAction( () => Player.IssueOrder(GameObjectOrder.AttackUnit, args.Target),50);
                                     Core.DelayAction( () => Q.Cast(Minion),150);
                                     Core.DelayAction( () => Orbwalker.DisableMovement = false,600);
                                     
                                     Chat.Print("Last Hitting With AA-Q");
+				 }
                                     
  
 
