@@ -180,6 +180,7 @@ namespace Ezreal7
                             {
                                 
                                 {
+				    EloBuddy.Player.IssueOrder(GameObjectOrder.Stop);
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
