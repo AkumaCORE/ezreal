@@ -174,11 +174,7 @@ namespace Ezreal7
                     
                     {
                         Chat.Print("not null");
-                        if( Minion.IsValidTarget(Player.Instance.GetAutoAttackRange(Minion)) && Orbwalker.CanAutoAttack && Minion == args.Target)
-                        {
-                            if(Q.IsReady())
-                            {
-                                
+ 
                                 {
 				    
 				    Orbwalker.DisableMovement = true;
@@ -189,17 +185,8 @@ namespace Ezreal7
                                     Chat.Print("Last Hitting With AA-Q");
                                     
                                 }
-                            }
-                            else if(E.IsReady())
-                                {
-                                		
-                                    Orbwalker.DisableMovement = true;
-                                    Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
-                                    Core.DelayAction( () =>  E.Cast(Minion), 100);
-                                    Orbwalker.DisableMovement = false;
-                                    Chat.Print("Last Hitting With AA-E");
-                                    
-                                }
+                            
+
 
 
                         }
