@@ -192,7 +192,7 @@ namespace Ezreal7
                                     
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
                                     Core.DelayAction( () =>  E.Cast(Minion), 300);
-                                    Chat.Print("Last Hitting With AA-Q");
+                                    Chat.Print("Last Hitting With AA-E");
                                     
                                 }
 
