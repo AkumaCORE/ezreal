@@ -166,6 +166,7 @@ namespace Ezreal7
             {
                 if (!(args.Target is AIHeroClient) && args.Target != null)
                 {
+                Chat.Print("t");
                     
                     var Minions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.Position, 750);
                     foreach (var Minion in Minions)
