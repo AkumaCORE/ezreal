@@ -171,7 +171,7 @@ namespace Ezreal7
                     var Minions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.Position, 750);
                     foreach (var Minion in Minions)
                     
-                    if (Minion != null && args.Target == Minion)
+                    if (Minion != null && args.Target == Minion && Minion.Health < sender.TotalAttackDamage)
                     
                     {
                         Chat.Print("not null");
