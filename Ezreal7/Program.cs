@@ -168,13 +168,14 @@ namespace Ezreal7
                 {
                 Chat.Print("sender detected");
                     
-                    var AMinions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Ally, Player.Instance.Position, 1000);
+                   
                     var Minions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.Position, 1500);
                     foreach (var Minion in Minions)
                     
                     if (Minion != null && args.Target == Minion)
                     
                     {
+                         var AMinions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Ally, Minion.Position, 500);
                         Chat.Print("The target is : " + Prediction.Health.GetPrediction(Minion, 945 * (int)(Minion.Distance(sender.Position)/750)));
                         
  
