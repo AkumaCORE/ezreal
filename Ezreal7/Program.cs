@@ -181,7 +181,6 @@ namespace Ezreal7
                                 
                                 {
 				    Orbwalker.DisableMovement = true;
-				    Player.IssueOrder(GameObjectOrder.Stop, ObjectManager.Player.Position);
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
                                     Q.Cast(Minion);
                                     Orbwalker.DisableMovement = false;
@@ -191,9 +190,11 @@ namespace Ezreal7
                             }
                             else if(E.IsReady())
                                 {
-                                    Player.IssueOrder(GameObjectOrder.Stop, ObjectManager.Player.Position);
+                                		
+                                    Orbwalker.DisableMovement = true;
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
                                     Core.DelayAction( () =>  E.Cast(Minion), 100);
+                                    Orbwalker.DisableMovement = false;
                                     Chat.Print("Last Hitting With AA-E");
                                     
                                 }
