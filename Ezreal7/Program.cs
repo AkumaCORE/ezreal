@@ -184,6 +184,7 @@ namespace Ezreal7
 				    Player.IssueOrder(GameObjectOrder.Stop, ObjectManager.Player.Position);
                                     Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
                                     Q.Cast(Minion);
+                                    Orbwalker.DisableMovement = false;
                                     Chat.Print("Last Hitting With AA-Q");
                                     
                                 }
