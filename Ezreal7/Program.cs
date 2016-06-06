@@ -158,7 +158,44 @@ namespace Ezreal7
                 Drawing.OnDraw += Drawing_OnDraw;
                 Game.OnTick += Game_OnTick;
                 Gapcloser.OnGapcloser += Gapcloser_OnGapcloser;
+                Obj_AI_Turret.OnBasicAttack += Obj_AI_Turret_OnBasicAttack2;
         }
+        public static void Obj_AI_Turret_OnBasicAttack2(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (sender is Obj_AI_Turret && sender.Distance(Player.Instance) < 800 && sender.IsAlly)
+            {
+                if (!(args.Target is AIHeroClient) && args.Target != null)
+                {
+                    
+                    var Minions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.Position, 450);
+                    foreach (var Minion in Minions)
+                    
+                    if (Minion != null && Prediction.Health.GetPrediction(Minion, 1) > Player.Instance.TotalAttackDamage && Prediction.Health.GetPrediction(Minion, 1) - sender.TotalAttackDamage * 1.1  <= 0 )
+                     
+                    {
+                        
+                        if( Minion.IsValidTarget(Player.Instance.GetAutoAttackRange(Minion)) && Orbwalker.CanAutoAttack && Minion == args.Target)
+                        {
+                            if(Q.IsReady())
+                            {
+                                
+                                {
+                                    
+                                    Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
+                                    Core.DelayAction( () =>  Q.Cast(Minion), 300);
+                                    Chat.Print("Last Hitting With AA-Q");
+                                    
+                                }
+                            }
+                        
+
+
+                        }
+
+                    }
+                }
+            }
+        }   
 
         private static void Drawing_OnDraw(EventArgs args)
         {
