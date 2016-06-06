@@ -176,7 +176,7 @@ namespace Ezreal7
                     {
                         Chat.Print("minion detected");
  
-				if(Minion.Health * 0.8 < sender.TotalAttackDamage && Prediction.Health.GetPrediction(args.Target, R.CastDelay * 1000) > 100)
+				if(Minion.Health * 0.8 < sender.TotalAttackDamage && Prediction.Health.GetPrediction(Minion, R.CastDelay * 1000) > 100)
 				 {   
 				    Chat.Print("health detected");
 				    Orbwalker.DisableMovement = true;
