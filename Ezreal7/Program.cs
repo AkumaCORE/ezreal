@@ -187,7 +187,14 @@ namespace Ezreal7
                                     
                                 }
                             }
-                        
+                            else if(E.IsReady())
+                                {
+                                    
+                                    Player.IssueOrder(GameObjectOrder.AttackUnit, Minion);
+                                    Core.DelayAction( () =>  E.Cast(Minion), 300);
+                                    Chat.Print("Last Hitting With AA-Q");
+                                    
+                                }
 
 
                         }
